@@ -1,11 +1,14 @@
 import React from "react"
-
+import Home from "./components/Home"
+import Game from "./components/Game";
+import { Routes, Route} from "react-router-dom";
 function App() {
 
   return (
-    <React.Fragment>
-      
-    </React.Fragment>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="game" element={<Game />} />
+    </Routes>
   )
 }
 
