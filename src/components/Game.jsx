@@ -1,19 +1,23 @@
 import { useState, useEffect, useRef } from "react";
+import Modal from "./Modal";
 
 let totalQue = 2;
-const totalNum=12;
+const totalNum = 12;
 let intervalId;
-
+let ScoreModal;
+let preEvent=null;
 function Game() {
     const [que, setQue] = useState(null);
     const timeRef = useRef();
     const operation = ["+", "-", "*", "/"];
     const totalTime = 5;
-    let preEvent;
     let a = 0, b = 0;
     const M = window.M;
 
     useEffect(() => {
+        let elems = document.querySelectorAll('.modal');
+        M.Modal.init(elems, {dismissible:false});
+        ScoreModal = M.Modal.getInstance(document.getElementById("score"));
         setTimeout(generateQue, 500);
     }
         , []);
@@ -32,6 +36,9 @@ function Game() {
                 console.log("totalQue :" + totalQue);
                 generateQue();
             }
+            else {
+                ScoreModal.open();
+            }
             return;
         }
         timeRef.current.innerHTML = t - 1;
@@ -49,6 +56,9 @@ function Game() {
         setQue(null);
         timeRef.current.innerHTML = totalTime;
         a = b = 0;
+        if(preEvent!=null){
+            preEvent.target.disabled = false;
+        }
 
     }
 
@@ -94,6 +104,9 @@ function Game() {
             resetAll();
             if (totalQue > 0) {
                 generateQue();
+            }
+            else {
+                ScoreModal.open();
             }
         }
     }
@@ -146,7 +159,7 @@ function Game() {
         obj.ans = setAns(n1, n2, obj);
         num.push(obj.num1);
         num.push(obj.num2);
-        for (let j = 0; j < totalNum-2; j++) {
+        for (let j = 0; j < totalNum - 2; j++) {
             let n = randomNum(min, max);
             if (num.includes(n)) {
                 j--;
@@ -195,6 +208,7 @@ function Game() {
                     </section>
                     : ""
             }
+            <Modal></Modal>
         </>
     );
 }
