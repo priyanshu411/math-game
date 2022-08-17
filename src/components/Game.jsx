@@ -1,17 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 
+let totalQue = 2;
+const totalNum=12;
+let intervalId;
+
 function Game() {
     const [que, setQue] = useState(null);
-    const timeRef = useRef(10);
+    const timeRef = useRef();
     const operation = ["+", "-", "*", "/"];
-    const totalTime = 20;
-    let totalQue = 10;
-    let intervalId;
+    const totalTime = 5;
+    let preEvent;
     let a = 0, b = 0;
     const M = window.M;
 
     useEffect(() => {
-        setTimeout(generateQue, 1000);
+        setTimeout(generateQue, 500);
     }
         , []);
 
@@ -22,11 +25,11 @@ function Game() {
 
     // update time 
     let updateTime = () => {
-        console.log("run" + totalQue);
         let t = Number(timeRef.current.innerHTML);
         if (t == 0) {
             resetAll();
             if (totalQue > 0) {
+                console.log("totalQue :" + totalQue);
                 generateQue();
             }
             return;
@@ -38,15 +41,63 @@ function Game() {
 
     // reset
     const resetAll = () => {
-        clearInterval(intervalId);
         console.log("reset");
+        clearInterval(intervalId);
+        console.log("b :" + totalQue);
         totalQue--;
-        intervalId = null;
+        console.log("a :" + totalQue);
         setQue(null);
         timeRef.current.innerHTML = totalTime;
         a = b = 0;
 
     }
+
+
+    // check answer
+    let checkAns = (e) => {
+        let flag = false;
+        if (a === 0) {
+            a = Number(e.target.value);
+            e.target.disabled = true;
+            preEvent = e;
+        }
+        else {
+            b = Number(e.target.value);
+            e.target.disabled = true;
+            switch (que.oper) {
+                case "+":
+                    if (a + b == que.ans)
+                        flag = true;
+                    break;
+                case "-":
+                    if (a - b == que.ans)
+                        flag = true;
+                    break;
+                case "*":
+                    if (a * b == que.ans)
+                        flag = true;
+                    break;
+                case "/":
+                    if (a / b == que.ans)
+                        flag = true;
+                    break;
+
+            }
+            if (flag) {
+                M.toast({ html: '<i class="material-icons">done</i>Right Answer', displayLength: 1200, classes: "green darken-1" });
+            }
+            else {
+                M.toast({ html: '<i class="material-icons">close</i>Wrong Answer', displayLength: 1200, classes: "red lighten-1" });
+            }
+            e.target.disabled = false;
+            preEvent.target.disabled = false;
+            resetAll();
+            if (totalQue > 0) {
+                generateQue();
+            }
+        }
+    }
+
 
     // get random number
     let randomNum = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -95,7 +146,7 @@ function Game() {
         obj.ans = setAns(n1, n2, obj);
         num.push(obj.num1);
         num.push(obj.num2);
-        for (let j = 0; j < 10; j++) {
+        for (let j = 0; j < totalNum-2; j++) {
             let n = randomNum(min, max);
             if (num.includes(n)) {
                 j--;
@@ -108,45 +159,7 @@ function Game() {
         timeRef.current.innerHTML = totalTime;
         console.log(que);
         console.log(obj);
-        startTime();
-
-    }
-
-
-    // check answer
-    let checkAns = (e) => {
-        let flag = false;
-        if (a === 0) {
-            a = Number(e.target.value);
-            e.target.disabled = true;
-        }
-        else {
-            b = Number(e.target.value);
-            e.target.disabled = true;
-            switch (que.oper) {
-                case "+":
-                    if (a + b == que.ans)
-                        flag = true;
-                case "-":
-                    if (a - b == que.ans)
-                        flag = true;
-                case "*":
-                    if (a * b == que.ans)
-                        flag = true;
-                case "/":
-                    if (a / b == que.ans)
-                        flag = true;
-
-            }
-            if (flag) {
-                M.toast({ html: '<i class="material-icons">done</i>Right Answer', displayLength: 1200, classes: "green darken-1" });
-            }
-            else {
-                M.toast({ html: '<i class="material-icons">close</i>Wrong Answer', displayLength: 1200, classes: "red lighten-1" });
-            }
-            resetAll();
-            // generateQue();
-        }
+        setTimeout(startTime, 200);
 
     }
 
@@ -154,29 +167,34 @@ function Game() {
 
     return (
         <>
-            <section className="row" >
-                <div className="box box-shadow col s10 m6 offset-s1 offset-m3">
-                    <div className="center">
-                        {que != null ?
-                            <h5 >a {que.oper} b = {que.ans}</h5>
-                            : ""
-                        }
-                        <h5 ref={timeRef} ></h5>
-                    </div>
-                    <div className="row p2">
-                        {
-                            que != null ?
-                                que.ranNum.map((n, i) => {
-                                    return (
-                                        <div key={i} className="col s4 m4 l3 center">
-                                            <button value={n} onClick={checkAns} className="my-btn">{n}</button>
-                                        </div>
-                                    );
-                                }) : ""
-                        }
-                    </div>
-                </div>
-            </section>
+            {
+                totalQue > 0 ?
+
+                    <section className="row" >
+                        <div className="box box-shadow col s10 m6 offset-s1 offset-m3">
+                            <div className="center white-text">
+                                {que != null ?
+                                    <h5 >a {que.oper} b = {que.ans}</h5>
+                                    : ""
+                                }
+                                <h5 ref={timeRef}></h5>
+                            </div>
+                            <div className="row p2">
+                                {
+                                    que != null ?
+                                        que.ranNum.map((n, i) => {
+                                            return (
+                                                <div key={i} className="col s4 m4 l3 center">
+                                                    <button value={n} onClick={checkAns} className="my-btn">{n}</button>
+                                                </div>
+                                            );
+                                        }) : ""
+                                }
+                            </div>
+                        </div>
+                    </section>
+                    : ""
+            }
         </>
     );
 }
