@@ -1,113 +1,134 @@
 import { useState, useEffect, useRef } from "react";
 import Modal from "./Modal";
 
-let totalQue = 2;
-const totalNum = 12;
-let intervalId;
 let ScoreModal;
-let preEvent=null;
+let scoreCount = 0;
+let preEvent = null;
 function Game() {
     const [que, setQue] = useState(null);
-    const timeRef = useRef();
+    const [score, setScore] = useState(0);
+    const timeRef = useRef(null);
     const operation = ["+", "-", "*", "/"];
-    const totalTime = 5;
+    const totalTime = 15;
     let a = 0, b = 0;
     const M = window.M;
 
+    let totalQueRef = useRef(5);
+    const totalNum = 12;
+    let intervalIdRef = useRef();
+
     useEffect(() => {
+        // modal initilize
         let elems = document.querySelectorAll('.modal');
-        M.Modal.init(elems, {dismissible:false});
+        M.Modal.init(elems, { dismissible: false });
         ScoreModal = M.Modal.getInstance(document.getElementById("score"));
+        scoreCount = 0;
+        // generate question for game
         setTimeout(generateQue, 500);
     }
         , []);
 
 
     // start the time 
-    let startTime = () => intervalId = setInterval(updateTime, 1000);
+    let startTime = () => intervalIdRef.current = setInterval(updateTime, 1000);
 
 
     // update time 
     let updateTime = () => {
-        let t = Number(timeRef.current.innerHTML);
-        if (t == 0) {
-            resetAll();
-            if (totalQue > 0) {
-                console.log("totalQue :" + totalQue);
-                generateQue();
+        try {
+            let t = Number(timeRef.current.innerHTML);
+            if (t == 0) {
+                resetAll();
+                if (totalQueRef.current > 0) {
+                    // console.log("totalQue :" + totalQueRef.current);
+                    generateQue();
+                }
+                else {
+                    setScore(scoreCount);
+                    ScoreModal.open();
+                }
+                return;
             }
-            else {
-                ScoreModal.open();
-            }
-            return;
+            timeRef.current.innerHTML = t - 1;
+        } catch (err) {
+            console.log(err)
         }
-        timeRef.current.innerHTML = t - 1;
-
     }
 
 
     // reset
     const resetAll = () => {
-        console.log("reset");
-        clearInterval(intervalId);
-        console.log("b :" + totalQue);
-        totalQue--;
-        console.log("a :" + totalQue);
-        setQue(null);
-        timeRef.current.innerHTML = totalTime;
-        a = b = 0;
-        if(preEvent!=null){
-            preEvent.target.disabled = false;
+        try {
+            console.log("reset");
+            clearInterval(intervalIdRef.current);
+            // console.log("b :" + totalQueRef.current);
+            totalQueRef.current--;
+            // console.log("a :" + totalQueRef.current);
+            setQue(null);
+            timeRef.current.innerHTML = totalTime;
+            a = b = 0;
+            // console.log(preEvent);
+            if (preEvent != null) {
+                preEvent.target.disabled = false;
+            }
+        } catch (err) {
+            console.log(err);
         }
-
     }
 
 
     // check answer
     let checkAns = (e) => {
-        let flag = false;
-        if (a === 0) {
-            a = Number(e.target.value);
-            e.target.disabled = true;
-            preEvent = e;
-        }
-        else {
-            b = Number(e.target.value);
-            e.target.disabled = true;
-            switch (que.oper) {
-                case "+":
-                    if (a + b == que.ans)
-                        flag = true;
-                    break;
-                case "-":
-                    if (a - b == que.ans)
-                        flag = true;
-                    break;
-                case "*":
-                    if (a * b == que.ans)
-                        flag = true;
-                    break;
-                case "/":
-                    if (a / b == que.ans)
-                        flag = true;
-                    break;
+        try {
+            let flag = false;
+            if (a === 0) {
+                a = Number(e.target.value);
+                e.target.disabled = true;
+                preEvent = e;
+                // console.log(preEvent);
+            }
+            else {
+                b = Number(e.target.value);
+                e.target.disabled = true;
+                switch (que.oper) {
+                    case "+":
+                        if (a + b == que.ans)
+                            flag = true;
+                        break;
+                    case "-":
+                        if (a - b == que.ans)
+                            flag = true;
+                        break;
+                    case "*":
+                        if (a * b == que.ans)
+                            flag = true;
+                        break;
+                    case "/":
+                        if (a / b == que.ans)
+                            flag = true;
+                        break;
 
+                }
+                if (flag) {
+                    scoreCount++;
+                    M.toast({ html: '<i class="material-icons">done</i>Right Answer', displayLength: 1200, classes: "green darken-1" });
+                }
+                else {
+                    M.toast({ html: '<i class="material-icons">close</i>Wrong Answer', displayLength: 1200, classes: "red lighten-1" });
+                }
+                e.target.disabled = false;
+                preEvent.target.disabled = false;
+                resetAll();
+                if (totalQueRef.current > 0) {
+                    generateQue();
+                }
+                else {
+                    setScore(scoreCount);
+                    ScoreModal.open();
+                }
             }
-            if (flag) {
-                M.toast({ html: '<i class="material-icons">done</i>Right Answer', displayLength: 1200, classes: "green darken-1" });
-            }
-            else {
-                M.toast({ html: '<i class="material-icons">close</i>Wrong Answer', displayLength: 1200, classes: "red lighten-1" });
-            }
-            e.target.disabled = false;
-            preEvent.target.disabled = false;
-            resetAll();
-            if (totalQue > 0) {
-                generateQue();
-            }
-            else {
-                ScoreModal.open();
-            }
+        } catch (err) {
+            console.log(err);
         }
     }
 
@@ -145,7 +166,17 @@ function Game() {
         }
     }
 
+    // shuffle numbers
+    function shuffleNumbers(arr) {
+        for(let i=arr.length-1;i>=0;i--){
+            let ran=randomNum(0,i);
+            let temp=arr[i];
+            arr[i]=arr[ran];
+            arr[ran]=temp
 
+        }
+        return(arr);
+    }
 
     // generate questions 
     function generateQue() {
@@ -166,11 +197,11 @@ function Game() {
             } else {
                 num.push(n);
             }
-            obj.ranNum = num;
         }
+        obj.ranNum = shuffleNumbers(num);
         setQue(obj);
         timeRef.current.innerHTML = totalTime;
-        console.log(que);
+        // console.log(que);
         console.log(obj);
         setTimeout(startTime, 200);
 
@@ -181,11 +212,11 @@ function Game() {
     return (
         <>
             {
-                totalQue > 0 ?
+                totalQueRef.current > 0 ?
 
                     <section className="row" >
                         <div className="box box-shadow col s10 m6 offset-s1 offset-m3">
-                            <div className="center white-text">
+                            <div className="center blue-grey-text text-lighten-4">
                                 {que != null ?
                                     <h5 >a {que.oper} b = {que.ans}</h5>
                                     : ""
@@ -198,17 +229,16 @@ function Game() {
                                         que.ranNum.map((n, i) => {
                                             return (
                                                 <div key={i} className="col s4 m4 l3 center">
-                                                    <button value={n} onClick={checkAns} className="my-btn">{n}</button>
+                                                    <button value={n} onClick={checkAns} className="btn-shadow num-btn btn-floating btn-large waves-effect waves-light blue-grey darken-1">{n}</button>
                                                 </div>
                                             );
                                         }) : ""
                                 }
                             </div>
                         </div>
-                    </section>
-                    : ""
+                    </section> : ""
             }
-            <Modal></Modal>
+            <Modal currScore={score}></Modal>
         </>
     );
 }
