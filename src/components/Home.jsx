@@ -9,10 +9,10 @@ function Home() {
                     <div className="center p2">
                         <div className="row center">
                             <div className="col s6">
-                                <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">question_mark</i></a>
+                                <a className="btn-shadow btn-floating btn-large waves-effect waves-light blue-grey darken-1"><i className="material-icons">question_mark</i></a>
                             </div>
                             <div className="col s6">
-                                <Link to="/game" className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons">start</i></Link>
+                                <Link to="/game" className="btn-shadow btn-floating btn-large waves-effect waves-light blue-grey darken-1"><i className="material-icons">start</i></Link>
                             </div>
                         </div>
                     </div>
