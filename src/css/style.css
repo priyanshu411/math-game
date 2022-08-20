@@ -12,6 +12,17 @@ body {
         0 5px 5px -3px rgba(182, 182, 182, 0.2);
 }
 
+.btn-shadow {
+    -webkit-box-shadow: 0px 0px 0px 3px #90a4ae;
+    box-shadow: 0px 0px 0px 3px #90a4ae;
+}
+
+.btn-shadow:hover {
+    -webkit-box-shadow: 0px 0px 2px 4px #90a4ae;
+    box-shadow: 0px 0px 2px 4px #90a4ae;
+
+}
+
 .box {
     border-radius: 15px;
     margin: 0;
@@ -30,27 +41,13 @@ body {
 }
 
 
-.my-btn {
+.num-btn {
     margin: 1rem 0.5rem;
-    border-radius: 50%;
     font-size: 1.3rem;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    cursor: pointer;
-    width: 4rem;
-    height: 4rem;
     border: none;
     outline: none;
-}
-
-.load {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: #ffff;
-    font-size: 5rem;
-
 }
