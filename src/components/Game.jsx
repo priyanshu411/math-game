@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import Modal from "./Modal";
+import ScoreModal from "./ScoreModal";
 
-let ScoreModal;
+let scoreModal;
 let scoreCount = 0;
 let preEvent = null;
 function Game() {
@@ -21,7 +21,7 @@ function Game() {
         // modal initilize
         let elems = document.querySelectorAll('.modal');
         M.Modal.init(elems, { dismissible: false });
-        ScoreModal = M.Modal.getInstance(document.getElementById("score"));
+        scoreModal = M.Modal.getInstance(document.getElementById("score"));
         scoreCount = 0;
         // generate question for game
         setTimeout(generateQue, 500);
@@ -45,7 +45,7 @@ function Game() {
                 }
                 else {
                     setScore(scoreCount);
-                    ScoreModal.open();
+                    scoreModal.open();
                 }
                 return;
             }
@@ -124,7 +124,7 @@ function Game() {
                 }
                 else {
                     setScore(scoreCount);
-                    ScoreModal.open();
+                    scoreModal.open();
                 }
             }
         } catch (err) {
@@ -238,7 +238,7 @@ function Game() {
                         </div>
                     </section> : ""
             }
-            <Modal currScore={score}></Modal>
+            <ScoreModal currScore={score}></ScoreModal>
         </>
     );
 }
