@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-function Modal(props) {
+function ScoreModal(props) {
     return (
         <>
             <div id="score" className="modal">
@@ -14,4 +14,4 @@ function Modal(props) {
         </>
     );
 }
-export default Modal;
+export default ScoreModal;
