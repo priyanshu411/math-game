@@ -202,7 +202,7 @@ function Game() {
         setQue(obj);
         timeRef.current.innerHTML = totalTime;
         // console.log(que);
-        console.log(obj);
+        // console.log(obj);
         setTimeout(startTime, 200);
 
     }
