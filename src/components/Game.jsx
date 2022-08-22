@@ -9,7 +9,7 @@ function Game() {
     const [score, setScore] = useState(0);
     const timeRef = useRef(null);
     const operation = ["+", "-", "*", "/"];
-    const totalTime = 15;
+    const totalTime = 20;
     let a = 0, b = 0;
     const M = window.M;
 
