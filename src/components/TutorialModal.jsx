@@ -6,7 +6,7 @@ function TutorialModal() {
                     <h4>Ho to Play?</h4>
                     <ul className="collection">
                         <li className="collection-item blue-grey darken-1">You will be given an operation, Ex : a - b = 10</li>
-                        <li className="collection-item blue-grey darken-1">You can select 2 numbers out of 20 and calculate and give correct result.</li>
+                        <li className="collection-item blue-grey darken-1">You can select 2 numbers out of 12 and calculate and give correct result.</li>
                         <li className="collection-item blue-grey darken-1">total operation is 5 (+, -, *, /).</li>
                         <li className="collection-item blue-grey darken-1">Total questions is 5.</li>
                         <li className="collection-item blue-grey darken-1">Each question time limit is 20s.</li>
