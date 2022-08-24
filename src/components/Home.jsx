@@ -12,7 +12,7 @@ function Home() {
             <main>
                 <div className="row">
                     <div className="box box-shadow col s10 m6 l4 offset-s1 offset-m3 offset-l4">
-                        <h3 className="center white-text p2">Math Game</h3>
+                        <h2 className="center white-text p2 heading">Math Game</h2>
                         <div className="center p2">
                             <div className="row center">
                                 <div className="col s6">

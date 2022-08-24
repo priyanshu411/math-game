@@ -1,6 +1,7 @@
 body {
     background: url(../images/bg.svg);
     height: 100%;
+    font-family: 'Silkscreen', cursive;
 }
 
 .box-shadow {
@@ -32,6 +33,10 @@ body {
     top: 50%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
+}
+
+.heading {
+    text-shadow: 2px -2px #3cf3ef;
 }
 
 .p2 {
