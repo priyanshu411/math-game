@@ -4,12 +4,13 @@ import ScoreModal from "./ScoreModal";
 let scoreModal;
 let scoreCount = 0;
 let preEvent = null;
+let notSelect = true;
 function Game() {
     const [que, setQue] = useState(null);
     const [score, setScore] = useState(0);
     const timeRef = useRef(null);
     const operation = ["+", "-", "*", "/"];
-    const totalTime = 20;
+    const totalTime = 30;
     let a = 0, b = 0;
     const M = window.M;
 
@@ -59,6 +60,9 @@ function Game() {
     // reset
     const resetAll = () => {
         try {
+            if (notSelect) {
+                M.toast({ html: '<i class="material-icons">list</i>Not select any option', displayLength: 1200, classes: "blue-grey darken-2" });
+            }
             console.log("reset");
             clearInterval(intervalIdRef.current);
             // console.log("b :" + totalQueRef.current);
@@ -67,6 +71,7 @@ function Game() {
             setQue(null);
             timeRef.current.innerHTML = totalTime;
             a = b = 0;
+            notSelect=true;
             // console.log(preEvent);
             if (preEvent != null) {
                 preEvent.target.disabled = false;
@@ -116,6 +121,7 @@ function Game() {
                 else {
                     M.toast({ html: '<i class="material-icons">close</i>Wrong Answer', displayLength: 1200, classes: "red lighten-1" });
                 }
+                notSelect=false;
                 e.target.disabled = false;
                 preEvent.target.disabled = false;
                 resetAll();
