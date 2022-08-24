@@ -168,14 +168,14 @@ function Game() {
 
     // shuffle numbers
     function shuffleNumbers(arr) {
-        for(let i=arr.length-1;i>=0;i--){
-            let ran=randomNum(0,i);
-            let temp=arr[i];
-            arr[i]=arr[ran];
-            arr[ran]=temp
+        for (let i = arr.length - 1; i >= 0; i--) {
+            let ran = randomNum(0, i);
+            let temp = arr[i];
+            arr[i] = arr[ran];
+            arr[ran] = temp
 
         }
-        return(arr);
+        return (arr);
     }
 
     // generate questions 
@@ -216,12 +216,12 @@ function Game() {
 
                     <section className="row" >
                         <div className="box box-shadow col s10 m6 offset-s1 offset-m3">
-                            <div className="center blue-grey-text text-lighten-4">
+                            <div className="center white-text">
                                 {que != null ?
                                     <h5 >a {que.oper} b = {que.ans}</h5>
                                     : ""
                                 }
-                                <h5 ref={timeRef}></h5>
+                                <h5><span ref={timeRef}></span><span>&nbsp;s</span></h5>
                             </div>
                             <div className="row p2">
                                 {
