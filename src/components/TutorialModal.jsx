@@ -3,7 +3,7 @@ function TutorialModal() {
         <>
             <div id="modal1" className="modal blue-grey darken-1 white-text">
                 <div className="modal-content">
-                    <h4>Ho to Play?</h4>
+                    <h4>How to Play?</h4>
                     <ul className="collection">
                         <li className="collection-item blue-grey darken-1">You will be given an operation, Ex : a - b = 10</li>
                         <li className="collection-item blue-grey darken-1">You can select 2 numbers out of 12 and calculate and give correct result.</li>
